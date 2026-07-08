@@ -1,3 +1,13 @@
+# na50r Documentation
+Fork is used to study the LineUp JS tool in more detail and figure out if it is possible to extract certain parts for it for a new tool.
+
+## Class Diagram
+UML class diagrams are typically a good way to analyse codebases. However, in this case, it might be more troublesome than expected.
+```sh
+npx tsuml2 -g "./src/**/*.ts" -o lineup-classes.svg
+```
+The generated class diagram contained quite a lot of information but it was clear relatively quickly, that most of the classes / interfaces were isolated.
+
 # LineUp.js: Visual Analysis of Multi-Attribute Rankings
 
 [![License][bsd-image]][bsd-url] [![NPM version][npm-image]][npm-url] [![Github Actions][github-actions-image]][github-actions-url]
