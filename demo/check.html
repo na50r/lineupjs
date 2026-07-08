@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>LineUp.js - Explicit Provider Test</title>
+  <link href="https://unpkg.com/lineupjs/build/LineUpJS.css" rel="stylesheet" />
+  <style>
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="https://unpkg.com/lineupjs/build/LineUpJS.js"></script>
+  <script>
+    // --- 5-row slice of the channels dataset ---
+    const data = [
+      {
+        itemId: 1001,
+        channel_since: 2015,
+        upload_consistency: 95,
+        content_category: 'Gaming',
+        channel_type: 'Solo channel',
+        video_type: 'Long-form',
+        avg_video_length_min: 18,
+        num_editors: 1,
+        num_series: 3,
+        sponsorship_rate: 2500,
+        min_video_length_min: 5,
+        max_video_length_min: 45,
+        number_of_videos: 1240,
+        audience_rating: 4.8,
+        production_quality: 4.5,
+        thumbnail_quality: 4.9,
+        name: 'PixelQuestGaming',
+      },
+      {
+        itemId: 1002,
+        channel_since: 2018,
+        upload_consistency: 80,
+        content_category: 'Cooking',
+        channel_type: 'Duo channel',
+        video_type: 'Long-form',
+        avg_video_length_min: 12,
+        num_editors: 2,
+        num_series: 5,
+        sponsorship_rate: 1800,
+        min_video_length_min: 3,
+        max_video_length_min: 25,
+        number_of_videos: 860,
+        audience_rating: 4.6,
+        production_quality: 4.9,
+        thumbnail_quality: 4.3,
+        name: 'SimpleSkilletEats',
+      },
+      {
+        itemId: 1005,
+        channel_since: 2021,
+        upload_consistency: 60,
+        content_category: 'Comedy',
+        channel_type: 'Duo channel',
+        video_type: 'Shorts',
+        avg_video_length_min: 1,
+        num_editors: 1,
+        num_series: 1,
+        sponsorship_rate: 900,
+        min_video_length_min: 1,
+        max_video_length_min: 3,
+        number_of_videos: 2200,
+        audience_rating: 4.2,
+        production_quality: 3.9,
+        thumbnail_quality: 4.5,
+        name: 'DailyChuckle',
+      },
+      {
+        itemId: 1010,
+        channel_since: 2013,
+        upload_consistency: 92,
+        content_category: 'Education',
+        channel_type: 'Solo channel',
+        video_type: 'Long-form',
+        avg_video_length_min: 25,
+        num_editors: 2,
+        num_series: 10,
+        sponsorship_rate: 1900,
+        min_video_length_min: 15,
+        max_video_length_min: 50,
+        number_of_videos: 2410,
+        audience_rating: 4.8,
+        production_quality: 4.7,
+        thumbnail_quality: 4.5,
+        name: 'LearnLoopAcademy',
+      },
+      {
+        itemId: 1014,
+        channel_since: 2023,
+        upload_consistency: 50,
+        content_category: 'ASMR',
+        channel_type: 'Solo channel',
+        video_type: 'Long-form',
+        avg_video_length_min: 30,
+        num_editors: 1,
+        num_series: 2,
+        sponsorship_rate: 600,
+        min_video_length_min: 15,
+        max_video_length_min: 60,
+        number_of_videos: 510,
+        audience_rating: 4.3,
+        production_quality: 4.9,
+        thumbnail_quality: 4.0,
+        name: 'WhisperWoodsASMR',
+      },
+    ];
+
+    // --- Explicit column descriptors ---
+    // Notice: itemId and name are deliberately left out of `desc`.
+    // LocalDataProvider will still keep them on each row object, but
+    // since they're not declared here, they won't become ranking
+    // columns at all (unlike asLineUp, which would auto-include them).
+    const desc = [
+      { column: 'content_category', type: 'categorical', categories: ['Gaming', 'Cooking', 'Comedy', 'Education', 'ASMR'] },
+      { column: 'channel_type', type: 'categorical', categories: ['Solo channel', 'Duo channel'] },
+      { column: 'video_type', type: 'categorical', categories: ['Long-form', 'Shorts'] },
+      { column: 'channel_since', type: 'number', domain: [2013, 2023] },
+      { column: 'upload_consistency', type: 'number', domain: [50, 95] },
+      { column: 'avg_video_length_min', type: 'number', domain: [1, 30] },
+      { column: 'num_editors', type: 'number', domain: [1, 2] },
+      { column: 'num_series', type: 'number', domain: [1, 10] },
+      { column: 'sponsorship_rate', type: 'number', domain: [600, 2500] },
+      { column: 'min_video_length_min', type: 'number', domain: [1, 15] },
+      { column: 'max_video_length_min', type: 'number', domain: [3, 60] },
+      { column: 'number_of_videos', type: 'number', domain: [510, 2410] },
+      { column: 'audience_rating', type: 'number', domain: [4.2, 4.8] },
+      { column: 'production_quality', type: 'number', domain: [3.9, 4.9] },
+      { column: 'thumbnail_quality', type: 'number', domain: [4.0, 4.9] },
+    ];
+
+    const p = new LineUpJS.LocalDataProvider(data, desc);
+    p.deriveDefault();
+    p.getLastRanking().insert(p.create(LineUpJS.createSelectionDesc()), 1);
+
+    const lineup = new LineUpJS.Taggle(document.body, p);
+    lineup.update();
+  </script>
+</body>
+
+</html>
