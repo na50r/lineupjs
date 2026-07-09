@@ -8,6 +8,58 @@ npx tsuml2 -g "./src/**/*.ts" -o lineup-classes.svg
 ```
 The generated class diagram contained quite a lot of information but it was clear relatively quickly, that most of the classes / interfaces were isolated.
 
+## Class Diagram Analysis
+To make the class diagram more readable, I explored ways to remove the unconnected entities as they don't seem to bring any value.
+```
+npx tsuml2 -g "./src/**/*.ts" --outDsl lineup-classes.nomnoml
+```
+The `.nomnoml` format lends itself well for scripting and analysis. I referred to this [Nomnoml_Syntax site](https://rstudio.github.io/nomnoml/reference/nomnoml_syntax.html) to understand the syntax. Then wrote a Notebook that allowed me to extract relevant information. I used Claude AI to make it faster to write the notebook (fixing Regexes mostly).
+
+### Stats
+```
+Base classes extended by multiple subclasses:
+  ADialog: 24
+  ValueColumn<T>: 13
+  AEventDispatcher: 10
+  ColumnBuilder<T>: 7
+  Column: 6
+  ArrayColumn<T>: 6
+  APopup: 6
+  MapColumn<T>: 5
+  CompositeColumn: 5
+  ALazyMap<T,T2>: 3
+
+Interfaces implemented by multiple classes:
+  ICellRendererFactory: 36
+  ISequence<T>: 7
+  IBuilderAdapterColumnDescProps: 7
+  IColorMappingFunction: 6
+  INumberColumn: 6
+  IArrayColumn<T>: 5
+  ICategoricalColumn: 4
+  Column: 4
+  IMapAbleColumn: 4
+  IColumnDesc: 3
+
+⚠️  Classes extending MULTIPLE base classes (unusual — check these):
+  None found — as expected for single-inheritance languages.
+
+Classes implementing the most interfaces:
+  IArrayColumnDesc<T>: implements 2 interfaces
+  ISetColumn: implements 2 interfaces
+  IDatesColumn: implements 2 interfaces
+  ImpositionCompositeColumn: implements 2 interfaces
+  IBoxPlotColumn: implements 2 interfaces
+  INumbersColumn: implements 2 interfaces
+  NumberColumn: implements 2 interfaces
+  INumbersDesc: implements 2 interfaces
+  OrdinalColumn: implements 2 interfaces
+  IScriptDesc: implements 2 interfaces
+```
+* `ICellRendererFactory` is an interface that is implemented by many classes in the code.
+* The codebase also has multi-interface implementations, which is unusual but may make sense.
+
+
 # LineUp.js: Visual Analysis of Multi-Attribute Rankings
 
 [![License][bsd-image]][bsd-url] [![NPM version][npm-image]][npm-url] [![Github Actions][github-actions-image]][github-actions-url]
